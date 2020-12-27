@@ -12,13 +12,15 @@ client.on('ready', () => {
     console.log('[Discord] Bot started.')
 })
 
-client.on('guildMemberAdd', member => {
+client.on("message", async message => {
+  if (message.content === "+request") {
     const linkId = pool.createLink(member.id);
     const embed = new Discord.MessageEmbed()
         .setTitle('reCAPTCHA Verification')
         .setDescription(`To gain access to this server you must solve a captcha. The link will expire in 15 minutes.\nhttp://${domain == '' ? 'localhost:8080' : domain}/verify/${linkId}`)
         .setColor('BLUE')
-    member.send(embed)
+    message.author.send(embed)
+}
 })
 
 function main() {
